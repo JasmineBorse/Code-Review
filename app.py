@@ -1,7 +1,7 @@
 import streamlit as st
 from openai import OpenAI
 
-client = OpenAI(api_key="key")
+client = OpenAI(api_key="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")
 
 # Default compliance standards
 DEFAULT_STANDARDS = """

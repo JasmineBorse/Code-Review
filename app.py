@@ -34,6 +34,15 @@ def analyze_code_with_standards(code, standards):
 # Streamlit UI
 st.title("Custom Secure Code Review Tool")
 
+st.markdown(
+    """
+    **Welcome to the Secure Code Review Tool!**
+    
+    This is a project made by **Jasmine and Chavi** for the **Cybersecurity course**.
+    Use this tool to analyze code based on specific security standards.
+    """
+)
+
 # Allow user to input or upload code
 uploaded_file = st.file_uploader("Upload your code file", type=["py", "js", "java", "c", "cpp", "ts"])
 user_code = st.text_area("Or, paste your code below:")

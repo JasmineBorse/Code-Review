@@ -1,8 +1,8 @@
-# secure_code_review.py
 import streamlit as st
 from openai import OpenAI
 
 client = OpenAI(api_key="key")
+
 # Default compliance standards
 DEFAULT_STANDARDS = """
 1. No hardcoded sensitive data like passwords or API keys.
@@ -24,9 +24,9 @@ def analyze_code_with_standards(code, standards):
     try:
         # Use the v1/chat/completions endpoint for chat-based models
         response = client.chat.completions.create(model="gpt-3.5-turbo",  # Or "gpt-4" if you have access
-        messages=messages,
-        max_tokens=600,
-        temperature=0.5)
+                                                  messages=messages,
+                                                  max_tokens=600,
+                                                  temperature=0.5)
         return response.choices[0].message.content.strip()
     except Exception as e:
         return f"Error: {e}"
@@ -48,17 +48,15 @@ uploaded_file = st.file_uploader("Upload your code file", type=["py", "js", "jav
 user_code = st.text_area("Or, paste your code below:")
 
 # User-defined standards
-user_standards = st.text_area("Define your security standards or rules (e.g., 'No hardcoded passwords', 'SQL queries must use parameterized inputs'):")
+user_standards = st.text_area("Define your security standards or rules (e.g., 'No hardcoded passwords', 'SQL queries must use parameterized inputs'): ")
 
 # Button to analyze code
 if st.button("Analyze Code"):
-    # Check if code is provided through the text area or uploaded file
+    # If a file is uploaded, use the uploaded file content, otherwise, use the pasted code
     if uploaded_file is not None:
         # Read the content of the uploaded file
         user_code = uploaded_file.read().decode("utf-8")
-    else:
-        user_code = None
-
+    
     if user_code:  # Check if code is available
         # Use default standards if none are provided by the user
         standards_to_use = user_standards if user_standards.strip() else DEFAULT_STANDARDS
@@ -69,4 +67,5 @@ if st.button("Analyze Code"):
             st.success("Analysis complete!")
             st.text_area("Code Review Results", result, height=300)
     else:
-        st.warning("Please upload a code file for analysis.")
+        st.warning("Please upload a code file or paste your code.")
+

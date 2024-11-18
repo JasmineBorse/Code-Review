@@ -1,7 +1,14 @@
+import os
 import streamlit as st
-from openai import OpenAI
+import openai
 
-client = OpenAI(api_key="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")
+# Retrieve the OpenAI API key from an environment variable (Recommended)
+api_key = os.getenv("OPENAI_API_KEY")
+
+if not api_key:
+    st.error("API key is not set. Please set the OPENAI_API_KEY environment variable.")
+else:
+    openai.api_key = api_key
 
 # Default compliance standards
 DEFAULT_STANDARDS = """
@@ -23,11 +30,13 @@ def analyze_code_with_standards(code, standards):
 
     try:
         # Use the v1/chat/completions endpoint for chat-based models
-        response = client.chat.completions.create(model="gpt-3.5-turbo",  # Or "gpt-4" if you have access
-                                                  messages=messages,
-                                                  max_tokens=600,
-                                                  temperature=0.5)
-        return response.choices[0].message.content.strip()
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",  # Or "gpt-4" if you have access
+            messages=messages,
+            max_tokens=600,
+            temperature=0.5
+        )
+        return response.choices[0].message["content"].strip()
     except Exception as e:
         return f"Error: {e}"
 

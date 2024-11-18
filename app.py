@@ -27,7 +27,7 @@ def analyze_code_with_standards(code, standards):
 
     try:
         # Use the v1/chat/completions endpoint for chat-based models
-        response = openai.ChatCompletion.create(
+        response = openai.completions.create(
             model="gpt-3.5-turbo",  # Or "gpt-4" if you have access
             messages=messages,
             max_tokens=600,

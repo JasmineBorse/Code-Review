@@ -2,14 +2,11 @@ import os
 import streamlit as st
 import openai
 
-# Retrieve the OpenAI API key from an environment variable (Recommended)
-openai.api_key = st.secrets["openai"]["api_key"]
-
-if not api_key:
-    st.error("API key is not set. Please set the OPENAI_API_KEY environment variable.")
-else:
-    openai.api_key = api_key
-
+try:
+    openai.api_key = st.secrets["openai"]["api_key"]
+except KeyError:
+    st.error("API key is not found in Streamlit secrets. Please check your secrets configuration.")
+    openai.api_key = None
 # Default compliance standards
 DEFAULT_STANDARDS = """
 1. No hardcoded sensitive data like passwords or API keys.
